@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Order is important here: -->
+    <string-array name="country_names">
+        <item>любой свободный номер мобильного телефона</item>
+        <item>номер российских операторов</item>
+        <item>номер украинских операторов</item>
+        <item>Москва и московская область</item>
+        <item>Санкт-Петербург и Ленинградская область</item>
+    </string-array>
+
+    <string-array name="country_codes">
+        <item>all</item>
+        <item>ru</item>
+        <item>ua</item>
+        <item>RU-MOS</item>
+        <item>RU-LEN</item>
+    </string-array>
+
+    <string-array name="country_flags">
+        <item>@drawable/ic_sms</item>
+        <item>@drawable/ic_sms</item>
+        <item>@drawable/ic_sms</item>
+        <item>@drawable/ic_sms</item>
+        <item>@drawable/ic_sms</item>
+    </string-array>
+
+    <string-array name="service_codes">
+        <item>youla</item>
+        <item>gmail</item>
+        <item>facebook</item>
+        <item>mailru</item>
+        <item>vk</item>
+        <item>classmates</item>
+        <item>twitter</item>
+        <item>mamba</item>
+        <item>uber</item>
+        <item>telegram</item>
+        <item>badoo</item>
+        <item>drugvokrug</item>
+        <item>avito</item>
+        <item>olx</item>
+        <item>steam</item>
+        <item>fotostrana</item>
+        <item>microsoft</item>
+        <item>viber</item>
+        <item>whatsapp</item>
+        <item>wechat</item>
+        <item>seosprint</item>
+        <item>instagram</item>
+        <item>yahoo</item>
+        <item>other</item>
+    </string-array>
+
+    <string-array name="service_names">
+        <item>Принять смс от youla.io</item>
+        <item>Принять смс от Gmail.com</item>
+        <item>Принять смс от Facebook.com</item>
+        <item>Принять смс от Mail.ru</item>
+        <item>Принять смс от Вконтакте</item>
+        <item>Принять смс от Одноклассники</item>
+        <item>Принять смс от Twitter</item>
+        <item>Принять смс от Мамба</item>
+        <item>Принять смс от Uber</item>
+        <item>Принять смс от telegram.org</item>
+        <item>Принять смс от Badoo</item>
+        <item>Принять смс от другвокруг</item>
+        <item>Принять смс от avito.ru</item>
+        <item>Принять смс от OLX</item>
+        <item>Принять смс от STEAM</item>
+
+        <item>Принять смс от Фотострана.ру</item>
+
+        <item>Принять смс от Microsoft</item>
+
+        <item>Принять смс от Viber</item>
+
+        <item>Принять смс от whatsapp.com</item>
+
+        <item>Принять смс от wechat.com</item>
+
+        <item>Принять смс от SEOsprint.net</item>
+
+        <item>Принять смс от Instagram</item>
+
+        <item>Принять смс от Yahoo</item>
+
+        <item>Принять смс от сервиса, которого нету в списке выше</item>
+    </string-array>
+    <string-array name="service_flags">
+        <item>@drawable/ic_sms</item>
+        <item>@drawable/ic_sms</item>
+        <item>@drawable/ic_sms</item>
+        <item>@drawable/ic_sms</item>
+        <item>@drawable/ic_sms</item>
+        <item>@drawable/ic_sms</item>
+        <item>@drawable/ic_sms</item>
+        <item>@drawable/ic_sms</item>
+        <item>@drawable/ic_sms</item>
+        <item>@drawable/ic_sms</item>
+        <item>@drawable/ic_sms</item>
+        <item>@drawable/ic_sms</item>
+        <item>@drawable/ic_sms</item>
+        <item>@drawable/ic_sms</item>
+        <item>@drawable/ic_sms</item>
+        <item>@drawable/ic_sms</item>
+        <item>@drawable/ic_sms</item>
+
+        <item>@drawable/ic_sms</item>
+
+        <item>@drawable/ic_sms</item>
+        <item>@drawable/ic_sms</item>
+        <item>@drawable/ic_sms</item>
+        <item>@drawable/ic_sms</item>
+        <item>@drawable/ic_sms</item>
+        <item>@drawable/ic_sms</item>
+        <item>@drawable/ic_sms</item>
+    </string-array>
+    <string-array name="err_get_num_repeat">
+        <item>Повтор по указанной операции невозможен</item>
+        <item>Запрос выполнен успешно</item>
+        <item>Номер оффлайн, используйте метод getNumRepeatOffline</item>
+        <item>Этот номер сейчас занят. Попробуйте позже</item>
+    </string-array>
+</resources>

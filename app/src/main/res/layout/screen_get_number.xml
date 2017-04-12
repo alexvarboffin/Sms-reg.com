@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="1">
+
+    <TextView
+        android:id="@+id/tv_response"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tv_tzid"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="17dp"
+        android:textSize="20sp"
+        tools:text="33380659" />
+
+    <TextView
+        android:id="@+id/tv_tzid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/linearLayout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/green_dash_rectangle"
+        android:textAlignment="center"
+        android:textColor="@color/windowBackground"
+        android:textSize="30sp"
+        android:textStyle="italic"
+        android:visibility="gone"
+        tools:text="33380659"
+        tools:visibility="visible" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btn_select_country"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_launcher"
+            android:text="Выбрать страну" />
+
+        <Button
+            android:id="@+id/btn_select_service"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:gravity="center|bottom"
+            android:paddingBottom="10dp"
+            android:text="Выбрать сервис" />
+
+        <Button
+            android:id="@+id/btn_get_num"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_launcher"
+            android:text="Получить номер" />
+
+    </LinearLayout>
+</RelativeLayout>
