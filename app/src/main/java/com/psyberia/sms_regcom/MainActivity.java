@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.psyberia.sms_regcom.rest.APIService;
 import com.psyberia.sms_regcom.rest.badbackend.BaseTypeModel;
 import com.psyberia.sms_regcom.rest.beans.APIError;
 import com.psyberia.sms_regcom.rest.beans.Balance;
@@ -40,58 +41,15 @@ import retrofit2.Response;
  */
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,
-        IOnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, IOnFragmentInteractionListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
+    @BindView(R.id.ll_footer)
+    LinearLayout footer;
 
-    private Callback<Balance> balanseCallback = new Callback<Balance>() {
-        @Override
-        public void onResponse(Call<Balance> call, Response<Balance> response) {
-            if (response.isSuccessful()) {
-
-
-                BaseTypeModel bm = response.body();
-
-                if (bm instanceof APIError) {
-                    Toast.makeText(MainActivity.this, ((APIError) bm).getErrorMsg(), Toast.LENGTH_SHORT).show();
-                } else if (bm != null) {
-                    Balance data = response.body();
-                    //tvResponse.setText(data.getBalance());
-
-                    String result = String.format(Locale.getDefault(), "%.2f", Float.valueOf(data.getBalance()));
-                    //tvBalance.setText(result);//1 - success
-                    Toast.makeText(MainActivity.this, "На вашем счету " + result + "руб.", Toast.LENGTH_LONG).show();
-                }
-
-            }
-
-        }
-
-        @Override
-        public void onFailure(Call<Balance> call, Throwable t) {
-
-        }
-    };
-
-
-    /*    private Callback<VsimGetSMSModel> nnnn = new Callback<VsimGetSMSModel>() {
-        @Override
-        public void onResponse(Call<VsimGetSMSModel> call, Response<VsimGetSMSModel> response) {
-            if (response.isSuccessful()) {
-                DLog.d("###"+response.body().toString());
-                //ItemsOrderByID[] items = obi.body().getItems();
-                //System.out.println(items.toString());
-            }
-        }
-
-        @Override
-        public void onFailure(Call<VsimGetSMSModel> call, Throwable t) {
-
-        }
-    };*/
+    private APIService api;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +57,8 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setupToolbar();
+
+        api = MyApplication.getApi();
 
         //APIService api = MyApplication.getApi();
         //api.vsimGetSMS("380973596903").enqueue(nnnn);
@@ -111,8 +71,6 @@ public class MainActivity extends AppCompatActivity
         mFirebaseAnalytics.logEvent("share_image", params);
         mFirebaseAnalytics.setCurrentScreen(this, "000", "00000");*/
 
-
-        LinearLayout footer = (LinearLayout) findViewById(R.id.ll_footer);
         footer.addView(new AdUtil().getAdView(this));
 
         /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -133,15 +91,15 @@ public class MainActivity extends AppCompatActivity
         //-    NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         //navigationView.setNavigationItemSelectedListener(this);
 
-        if (null != findViewById(R.id.container)) {
-            if (null != savedInstanceState) {
+        if (findViewById(R.id.container) != null) {
+            if (savedInstanceState != null) {
                 return;
             }
 
+            // Add the fragment to the 'fragment_container'
             ScreenOperation firstFragment = ScreenOperation.newInstance();
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container, firstFragment)
-                    .commit();
+                    .add(R.id.container, firstFragment).commit();//firstFragment
         }
     }
 
@@ -149,8 +107,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
     }
 
-    @Override
-    public void onBackPressed() {
+    @Override public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -159,15 +116,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    @Override public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
@@ -185,7 +134,7 @@ public class MainActivity extends AppCompatActivity
             case R.id.action_balance:
                 //setTitle(item.getTitle());
                 //replaceFragment(new ScreenBalance());
-                MyApplication.getApi().getBalance().enqueue(balanseCallback);
+                api.getBalance().enqueue(balanseCallback);
                 return true;
             case R.id.action_operations:
                 //setTitle(item.getTitle());
@@ -216,6 +165,34 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+
+    @Override public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+
+    @Override public void replaceFragment(Fragment fragment) {
+        // update the main content by replacing fragments
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        // Add the fragment to the activity, pushing this transaction
+        // on to the back stack.
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+        ft.replace(R.id.container, fragment); //PlaceholderFragment.newInstance(item.getTitle())
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        ft.addToBackStack(null);
+        ft.commit();
+    }
+
+    @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+    @Override public void setActionBarTitle(String title) {
+        assert getSupportActionBar() != null;
+        getSupportActionBar().setTitle(title);
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -241,31 +218,51 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    @Override
-    public void replaceFragment(Fragment fragment) {
-        // update the main content by replacing fragments
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        // Add the fragment to the activity, pushing this transaction
-        // on to the back stack.
-        FragmentTransaction ft = fragmentManager.beginTransaction();
-        ft.replace(R.id.container, fragment); //PlaceholderFragment.newInstance(item.getTitle())
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        ft.addToBackStack(null);
-        ft.commit();
-    }
 
-    @Override
-    public void setActionBarTitle(String title) {
-        getSupportActionBar().setTitle(title);
-    }
+    private Callback<Balance> balanseCallback = new Callback<Balance>() {
+        @Override
+        public void onResponse(Call<Balance> call, Response<Balance> response) {
+            if (response.isSuccessful()) {
 
-    public void onClick(View v) {
 
-    }
+                BaseTypeModel bm = response.body();
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-    }
+                if (bm instanceof APIError) {
+                    Toast.makeText(MainActivity.this, ((APIError) bm).getErrorMsg(), Toast.LENGTH_SHORT).show();
+                } else if (bm != null) {
+                    Balance data = response.body();
+                    //tvResponse.setText(data.getBalance());
+
+                    String b = (data.getBalance() == null) ? "0" : data.getBalance();
+                    String result = String.format(Locale.getDefault(), getString(R.string.account_balanse), Float.valueOf(b));
+                    //tvBalance.setText(result);//1 - success
+                    Toast.makeText(MainActivity.this, result, Toast.LENGTH_LONG).show();
+                }
+
+            }
+
+        }
+
+        @Override
+        public void onFailure(Call<Balance> call, Throwable t) {
+
+        }
+    };
+
+    /*    private Callback<VsimGetSMSModel> nnnn = new Callback<VsimGetSMSModel>() {
+        @Override
+        public void onResponse(Call<VsimGetSMSModel> call, Response<VsimGetSMSModel> response) {
+            if (response.isSuccessful()) {
+                DLog.d("###"+response.body().toString());
+                //ItemsOrderByID[] items = obi.body().getItems();
+                //System.out.println(items.toString());
+            }
+        }
+
+        @Override
+        public void onFailure(Call<VsimGetSMSModel> call, Throwable t) {
+
+        }
+    };*/
 }
 

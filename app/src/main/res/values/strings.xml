@@ -57,4 +57,5 @@
     <string name="about">This is our App, please see http://... \nEmail support at alexvarboffin@gmail.com.</string>
     <string name="action_about">About</string>
     <string name="title_api_key">API access key</string>
+    <string name="account_balanse">На вашем счету %.2f руб.</string>
 </resources>

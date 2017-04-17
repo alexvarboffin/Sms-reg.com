@@ -26,8 +26,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class ScreenBalance extends BaseFragment
-        implements ChildItemClickListener {
+public class ScreenBalance extends BaseFragment implements ChildItemClickListener {
 
     @BindView(R.id.tv_response)
     TextView tvResponse;
@@ -48,8 +47,9 @@ public class ScreenBalance extends BaseFragment
                     Balance data = response.body();
                     //tvResponse.setText(data.getBalance());
 
-                    String result = String.format(Locale.getDefault(), "%.2f", Float.valueOf(data.getBalance()));
-                    tvBalance.setText(result);//1 - success
+                    String b = (data.getBalance() == null) ? "" : data.getBalance();
+                    //String result = String.format(Locale.getDefault(), "%.2f", Float.valueOf(b));
+                    //tvBalance.setText(result);//1 - success
                 }
 
             }
@@ -81,10 +81,10 @@ public class ScreenBalance extends BaseFragment
 
     @Override
     protected void initInstances() {
+        api = MyApplication.getApi();
         if (mListener != null) {
             mListener.setActionBarTitle(getString(R.string.title_balance));
         }
-        api = MyApplication.getApi();
         api.getBalance().enqueue(callback);
     }
 

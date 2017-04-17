@@ -36,7 +36,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MyApplication extends Application {
 
-    public static final boolean DEBUG = false;
+    public static final boolean DEBUG = true;
     public static SharedPreferences sSharedPreferences;
 
     //======================================================

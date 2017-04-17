@@ -24,6 +24,54 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
+-optimizationpasses 5
+
+-obfuscationdictionary obfuscationdictionary.txt
+-classobfuscationdictionary obfuscationdictionary.txt
+-packageobfuscationdictionary package_dictionary.txt
+
+-dontskipnonpubliclibraryclasses
+
+-overloadaggressively
+-useuniqueclassmembernames
+
+#-repackageclasses
+
+-dump class_files.txt
+-printseeds seeds.txt
+-printusage unused.txt
+-printmapping mapping.txt
+
+
+-dontwarn okio.**
+-dontwarn retrofit2.Platform$Java8
+-dontwarn retrofit.Platform$Java8
+-dontwarn retrofit2.Platform$Java8
+-dontwarn rx.internal.util.**
+
+#--------------------------------------------------------
+# Retrofit
+#--------------------------------------------------------
+#-dontwarn retrofit2.**
+#-dontwarn org.codehaus.mojo.**
+#-keep class retrofit2.** { *; }
+#-keepattributes Exceptions
+#-keepattributes *Annotation*
+
+#-keepattributes RuntimeVisibleAnnotations
+#-keepattributes RuntimeInvisibleAnnotations
+#-keepattributes RuntimeVisibleParameterAnnotations
+#-keepattributes RuntimeInvisibleParameterAnnotations
+
+#-keepattributes EnclosingMethod
+
+
+
+#-keepclasseswithmembers interface * {
+#    @retrofit2.* <methods>;
+#}
+
+
 # Retrofit 2.X
 ## https://square.github.io/retrofit/ ##
 
@@ -37,11 +85,8 @@
 }
 
 -dontwarn okhttp3.**
--dontwarn okio.**
--dontwarn retrofit2.Platform$Java8
 
--dontwarn retrofit.Platform$Java8
--dontwarn retrofit2.Platform$Java8
+
 
 -dontwarn sun.misc.Unsafe
 -dontwarn org.w3c.dom.bootstrap.DOMImplementationRegistry
@@ -64,7 +109,7 @@
 
  #Last resort:
 
- -keep class !com.my.package.** { *; }
+ -keep class !com.psyberia.** { *; }
 
  -keep public class com.google.firebase.** { public *; }
 
@@ -72,7 +117,7 @@
 
 
  # Add this global rule
- -keepattributes Signature
+-keepattributes Signature
 
  # This rule will properly ProGuard all the model classes in
  # the package com.yourcompany.models. Modify to fit the structure
