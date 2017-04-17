@@ -130,7 +130,9 @@ public class ScreenOperationTab1 extends BaseFragment
 
         @Override
         public void onFailure(Call<BadBackendResponse<OperationBean[]>> call, Throwable t) {
-
+            Toast.makeText(getContext(), "Ошибка доступа к серверу! "
+                    //+ t
+                    , Toast.LENGTH_SHORT).show();
         }
     };
 

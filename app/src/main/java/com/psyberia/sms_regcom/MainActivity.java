@@ -9,12 +9,12 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.psyberia.sms_regcom.rest.badbackend.BaseTypeModel;
@@ -76,12 +76,44 @@ public class MainActivity extends AppCompatActivity
         }
     };
 
+
+    /*    private Callback<VsimGetSMSModel> nnnn = new Callback<VsimGetSMSModel>() {
+        @Override
+        public void onResponse(Call<VsimGetSMSModel> call, Response<VsimGetSMSModel> response) {
+            if (response.isSuccessful()) {
+                DLog.d("###"+response.body().toString());
+                //ItemsOrderByID[] items = obi.body().getItems();
+                //System.out.println(items.toString());
+            }
+        }
+
+        @Override
+        public void onFailure(Call<VsimGetSMSModel> call, Throwable t) {
+
+        }
+    };*/
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setupToolbar();
+
+        //APIService api = MyApplication.getApi();
+        //api.vsimGetSMS("380973596903").enqueue(nnnn);
+
+        /*        FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
+        Bundle params = new Bundle();
+        params.putString("image_name", "lolo");
+        params.putString("full_text", "0000000000000000000000000");
+        mFirebaseAnalytics.logEvent("share_image", params);
+        mFirebaseAnalytics.setCurrentScreen(this, "000", "00000");*/
+
+
+        LinearLayout footer = (LinearLayout) findViewById(R.id.ll_footer);
+        footer.addView(new AdUtil().getAdView(this));
 
         /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -92,14 +124,14 @@ public class MainActivity extends AppCompatActivity
             }
         });*/
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
+        //-    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        //-    ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        //-            this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        //-    drawer.setDrawerListener(toggle);
+        //-    toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        //-    NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        //navigationView.setNavigationItemSelectedListener(this);
 
         if (null != findViewById(R.id.container)) {
             if (null != savedInstanceState) {
@@ -169,6 +201,10 @@ public class MainActivity extends AppCompatActivity
             case R.id.action_order_add:
                 //setTitle(item.getTitle());
                 replaceFragment(new ScreenOrderAdd());
+                return true;
+
+            case R.id.action_about:
+                AboutBox.Show(MainActivity.this);
                 return true;
 
             case R.id.action_exit:

@@ -7,11 +7,14 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.psyberia.sms_regcom.MyApplication;
 import com.psyberia.sms_regcom.R;
+import com.psyberia.sms_regcom.helper.PreferencesHelper;
 import com.psyberia.sms_regcom.rest.APIService;
 import com.psyberia.sms_regcom.rest.ErrorUtils;
 import com.psyberia.sms_regcom.rest.badbackend.BaseTypeModel;
@@ -20,10 +23,15 @@ import com.psyberia.sms_regcom.rest.beans.NumModel;
 import com.psyberia.sms_regcom.sdk.BaseFragment;
 import com.psyberia.sms_regcom.sdk.ChildItemClickListener;
 import com.psyberia.sms_regcom.sdk.DLog;
+import com.psyberia.sms_regcom.ui.adapter.CustomSpinnerAdapter;
+import com.psyberia.sms_regcom.ui.adapter.NothingSelectedSpinnerAdapter;
+import com.psyberia.sms_regcom.ui.adapter.SpinnerItem;
 import com.psyberia.sms_regcom.ui.dialog.CountrycodeActivity;
 import com.psyberia.sms_regcom.ui.dialog.ServicecodeActivity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -41,6 +49,12 @@ public class ScreenGetNum extends BaseFragment implements ChildItemClickListener
     TextView tvResponse;
     @BindView(R.id.tv_tzid)
     TextView tvTzid;
+    @BindView(R.id.s_country)
+    Spinner sCountry;
+    @BindView(R.id.s_service)
+    Spinner sService;
+    List<SpinnerItem> spinnerItems1, spinnerItems2;
+    private boolean isStarted = false;
     private Callback<NumModel> callback = new Callback<NumModel>() {
 
         @Override
@@ -95,6 +109,37 @@ public class ScreenGetNum extends BaseFragment implements ChildItemClickListener
     };
     private APIService api;
     private Map<String, String> options;
+    private PreferencesHelper mpm;
+    AdapterView.OnItemSelectedListener spinnerItemSelectListener = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            if (position <= 0) return;
+            String selected = "";
+
+            int viewId = parent.getId();
+            switch (viewId) {
+                case R.id.s_country:
+                    selected = //item.getCode(); //
+                            spinnerItems1.get(position - 1).getCode();
+                    mpm.putSelected(viewId, position);
+                    options.put("country", selected);
+                    break;
+
+                case R.id.s_service:
+                    selected = spinnerItems2.get(position - 1).getCode();
+                    mpm.putSelected(viewId, position);
+                    options.put("service", selected);
+                    break;
+            }
+
+            //if (isStarted) Toast.makeText(getContext(), selected, Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+    };
 
     @Nullable
     @Override
@@ -117,6 +162,7 @@ public class ScreenGetNum extends BaseFragment implements ChildItemClickListener
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
+        mpm = PreferencesHelper.getInstance();
         initInstances();
     }
 
@@ -133,6 +179,54 @@ public class ScreenGetNum extends BaseFragment implements ChildItemClickListener
         if (mListener != null) {
             mListener.setActionBarTitle(getString(R.string.title_get_num));
         }
+
+
+        String[] countryValues = getResources().getStringArray(R.array.country_names);
+        String[] countryCodes = getResources().getStringArray(R.array.country_codes);
+
+        String[] serviceValues = getResources().getStringArray(R.array.service_names);
+        String[] serviceCodes = getResources().getStringArray(R.array.service_codes);
+
+
+        spinnerItems1 = new ArrayList<>();
+        spinnerItems2 = new ArrayList<>();
+
+        for (int i = 0; i < countryValues.length; i++) {
+            spinnerItems1.add(new SpinnerItem(countryValues[i], countryCodes[i]));
+        }
+
+        for (int i = 0; i < serviceValues.length; i++) {
+            spinnerItems2.add(new SpinnerItem(serviceValues[i], serviceCodes[i]));
+        }
+
+
+        CustomSpinnerAdapter adapter = new CustomSpinnerAdapter(getActivity(), R.layout.row_activity_countrycode, spinnerItems1);
+        sCountry.setAdapter(adapter);
+
+        //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sCountry.setPrompt("-- Выбрать страну --");
+
+        sCountry.setAdapter(
+                new NothingSelectedSpinnerAdapter(adapter, R.layout.spinner_row_nothing_selected,
+                        // R.layout.contact_spinner_nothing_selected_dropdown, // Optional
+                        getContext(), "-- Выбрать страну --"));
+
+
+        sCountry.setSelection(mpm.getSelected(R.id.s_country));
+
+        adapter = new CustomSpinnerAdapter(getActivity(), R.layout.row_activity_countrycode, spinnerItems2);
+        sService.setAdapter(
+                new NothingSelectedSpinnerAdapter(adapter, R.layout.spinner_row_nothing_selected,
+                        // R.layout.contact_spinner_nothing_selected_dropdown, // Optional
+                        getContext(), "-- Выбрать сервис --"));
+        sService.setPrompt("-- Выбрать сервис --");
+        sService.setSelection(mpm.getSelected(R.id.s_service));
+
+        sCountry.setOnItemSelectedListener(spinnerItemSelectListener);
+        sService.setOnItemSelectedListener(spinnerItemSelectListener);
+
+
+        isStarted = true;
     }
 
     @Override
@@ -143,15 +237,15 @@ public class ScreenGetNum extends BaseFragment implements ChildItemClickListener
     }
 
     @OnClick({
-            R.id.btn_select_country,
-            R.id.btn_select_service,
+            //R.id.btn_select_country,
+            //R.id.btn_select_service,
             R.id.btn_get_num,
             R.id.tv_tzid
     })
     public void submit(View view) {
         // TODO submit data to server...
         switch (view.getId()) {
-            case R.id.btn_select_country:
+            /*case R.id.btn_select_country:
                 Intent intent = new Intent(getContext(), CountrycodeActivity.class);
                 startActivityForResult(intent, 1);
                 break;
@@ -159,7 +253,7 @@ public class ScreenGetNum extends BaseFragment implements ChildItemClickListener
             case R.id.btn_select_service:
                 intent = new Intent(getContext(), ServicecodeActivity.class);
                 startActivityForResult(intent, 2);
-                break;
+                break;*/
 
             case R.id.btn_get_num:
                 //if (options.get("country").isEmpty()) {

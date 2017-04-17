@@ -45,3 +45,38 @@
 
 -dontwarn sun.misc.Unsafe
 -dontwarn org.w3c.dom.bootstrap.DOMImplementationRegistry
+
+
+#Firebase SDK 2.0.0:
+
+ -keep class com.firebase.** { *; }
+ -keep class org.apache.** { *; }
+ -keepnames class com.fasterxml.jackson.** { *; }
+ -keepnames class javax.servlet.** { *; }
+ -keepnames class org.ietf.jgss.** { *; }
+ -dontwarn org.w3c.dom.**
+ -dontwarn org.joda.time.**
+ -dontwarn org.shaded.apache.**
+ -dontwarn org.ietf.jgss.**
+
+ # Only necessary if you downloaded the SDK jar directly instead of from maven.
+ -keep class com.shaded.fasterxml.jackson.** { *; }
+
+ #Last resort:
+
+ -keep class !com.my.package.** { *; }
+
+ -keep public class com.google.firebase.** { public *; }
+
+
+
+
+ # Add this global rule
+ -keepattributes Signature
+
+ # This rule will properly ProGuard all the model classes in
+ # the package com.yourcompany.models. Modify to fit the structure
+ # of your app.
+ -keepclassmembers class com.psyberia.sms_regcom.rest.beans.** {
+   *;
+ }

@@ -23,4 +23,9 @@
     <color name="success_green">#5cb85c</color>
     <color name="danger_red">#d9534f</color>
 
+
+    <!-- wa -->
+    <color name="btn_disabled">#ffc3c3c3</color>
+    <color name="btn_green_pressed">#ff1aa94c</color>
+    <color name="btn_green_registration">@color/success_green</color>
 </resources>

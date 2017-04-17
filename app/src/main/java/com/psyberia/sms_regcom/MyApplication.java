@@ -36,7 +36,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MyApplication extends Application {
 
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
     public static SharedPreferences sSharedPreferences;
 
     //======================================================
@@ -159,4 +159,5 @@ public class MyApplication extends Application {
     public void onLowMemory() {
         super.onLowMemory();
     }
+
 }

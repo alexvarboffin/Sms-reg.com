@@ -14,7 +14,7 @@
 
     <item
         android:id="@+id/action_insert_api_key"
-        android:title="Ключ доступа к API" />
+        android:title="@string/title_api_key" />
 
 
     <item
@@ -39,6 +39,11 @@
 
     <item
         android:id="@+id/action_order_add"
-        android:title="@string/title_order_add" />
+        android:title="@string/title_order_add"
+        android:visible="false" />
+
+    <item
+        android:id="@+id/action_about"
+        android:title="@string/action_about" />
 
 </menu>

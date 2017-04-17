@@ -1,6 +1,7 @@
 package com.psyberia.sms_regcom.ui.adapter;
 
 import android.app.Activity;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,16 +29,17 @@ public class ServiceListArrayAdapter extends ArrayAdapter<ServicecodeActivity.Se
         this.list = list;
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View view = null;
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+        View view;
 
         if (convertView == null) {
             LayoutInflater inflator = context.getLayoutInflater();
             view = inflator.inflate(R.layout.row_activity_countrycode, null);
             final ViewHolder viewHolder = new ViewHolder();
-            viewHolder.name = (TextView) view.findViewById(R.id.name);
-            viewHolder.flag = (ImageView) view.findViewById(R.id.flag);
+            viewHolder.name = (TextView) view.findViewById(android.R.id.text1);
+            viewHolder.flag = (ImageView) view.findViewById(R.id.icon1);
             view.setTag(viewHolder);
         } else {
             view = convertView;

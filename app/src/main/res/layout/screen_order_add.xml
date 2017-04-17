@@ -149,10 +149,11 @@
 
     <Button
         android:id="@+id/btn_order_add"
+        style="@style/SmsRegButton.Green"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
         android:text="@string/scr_order_add_btn" />
 </RelativeLayout>

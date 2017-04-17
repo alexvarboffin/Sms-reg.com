@@ -22,9 +22,9 @@ public class CountryListArrayAdapter extends ArrayAdapter<CountrycodeActivity.Co
     private final List<CountrycodeActivity.Country> list;
     private final Activity context;
 
-    public CountryListArrayAdapter(Activity context, List<CountrycodeActivity.Country> list) {
-        super(context, R.layout.row_activity_countrycode, list);
-        this.context = context;
+    public CountryListArrayAdapter(Activity activity, List<CountrycodeActivity.Country> list) {
+        super(activity, R.layout.row_activity_countrycode, list);
+        this.context = activity;
         this.list = list;
     }
 
@@ -36,8 +36,8 @@ public class CountryListArrayAdapter extends ArrayAdapter<CountrycodeActivity.Co
             LayoutInflater inflator = context.getLayoutInflater();
             view = inflator.inflate(R.layout.row_activity_countrycode, null);
             final ViewHolder viewHolder = new ViewHolder();
-            viewHolder.name = (TextView) view.findViewById(R.id.name);
-            viewHolder.flag = (ImageView) view.findViewById(R.id.flag);
+            viewHolder.name = (TextView) view.findViewById(android.R.id.text1);
+            viewHolder.flag = (ImageView) view.findViewById(R.id.icon1);
             view.setTag(viewHolder);
         } else {
             view = convertView;

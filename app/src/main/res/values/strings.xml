@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Sms-reg.com</string>
+    <string name="app_name" translatable="false">SMS Droid</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -33,9 +33,9 @@
     <string name="title_operations">Operations</string>
     <string name="title_balance">Balance</string>
     <string name="title_set_rate">Set Rate</string>
-    <string name="title_get_num">Виртуальный номер</string>
+    <string name="title_get_num">Virtual number</string>
     <string name="title_order_add">Order Add</string>
-    <string name="scr_order_add_btn">Создает новый заказ</string>
+    <string name="scr_order_add_btn">Создать новый заказ</string>
     <string name="scr_order_add_city_hint">Cписок городов</string>
     <string name="scr_order_add_city_tv">Город (или список городов через запятую), который вы желаете чтобы был указан при регистрации аккаунтов.</string>
     <string name="scr_order_add_gender_tv">Пол, который вы желаете чтобы был указан при регистрации аккаунтов.</string>
@@ -48,10 +48,13 @@
     <string name="scr_order_add_name_hint">Имена</string>
     <string name="btn_action_set_ready">Получить смс...</string>
     <string name="btn_action_set_operation_over">Завершить операцию с уведомлением о неверном коде</string>
-    <string name="btn_action_set_operation_revise">Cоздает запрос на уточнение ответа по операции.</string>
-    <string name="btn_action_get_num_repeat">Запрос повторного использования ранее данного номера.</string>
+    <string name="btn_action_set_operation_revise">Запрос на уточнение ответа по операции.</string>
+    <string name="btn_action_get_num_repeat">Запрос повторного использования данного номера.</string>
     <string name="btn_action_set_operation_used">выданный номер уже использован или заблокирован в сервисе для которого запрашивалась активация.</string>
     <string name="btn_action_set_operation_ok">Код успешно получен</string>
     <string name="textView2">Выделенный номер:</string>
     <string name="action_exit">Exit</string>
+    <string name="about">This is our App, please see http://... \nEmail support at alexvarboffin@gmail.com.</string>
+    <string name="action_about">About</string>
+    <string name="title_api_key">API access key</string>
 </resources>

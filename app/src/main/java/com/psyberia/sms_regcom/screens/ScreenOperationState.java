@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.psyberia.sms_regcom.MyApplication;
 import com.psyberia.sms_regcom.R;
 import com.psyberia.sms_regcom.Utils;
@@ -23,6 +24,9 @@ import com.psyberia.sms_regcom.rest.beans.ReadyModel;
 import com.psyberia.sms_regcom.sdk.BaseFragment;
 import com.psyberia.sms_regcom.sdk.ChildItemClickListener;
 import com.psyberia.sms_regcom.sdk.DLog;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -70,6 +74,7 @@ public class ScreenOperationState extends BaseFragment
     TextView tvNumber;
     @BindView(R.id.tv_msg)
     TextView tvMsg;
+    private Timer timer = new Timer();
     private String tzid;
     private Callback<GetStateModel> operationsCallback = new Callback<GetStateModel>() {
         @Override
@@ -77,8 +82,13 @@ public class ScreenOperationState extends BaseFragment
             if (response.isSuccessful()) {
                 GetStateModel data = response.body();
 
-                tvResponse.setText("Response: " + hm.get(data.getResponse()));
+                tvResponse.setText(hm.get(data.getResponse()));
                 tvService.setText("Сервис: " + data.getService());
+
+
+                //data.setResponse(Constants.State.TZ_NUM_ANSWER);
+                //data.setNumber("7952257513");
+                //data.setMsg("09878");
 
                 if (data.getNumber() == null) {
                     tvNumTitle.setVisibility(View.GONE);
@@ -225,6 +235,7 @@ NEWTZID = id новой операции операции.*/
         }
     };
     private APIService api;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     public static ScreenOperationState newInstance(String tzid) {
         ScreenOperationState fragment = new ScreenOperationState();
@@ -322,7 +333,7 @@ NEWTZID = id новой операции операции.*/
                         btnSetOperOver,
                         btnOperUsed,
                         btnOperOk
-                }, false);
+                }, false);//=======================================================
                 enableBtn(new Button[]{btnGetNumRepeat}, true);
                 break;
 
@@ -351,6 +362,15 @@ NEWTZID = id новой операции операции.*/
     }
 
     @Override
+    public void onDetach() {
+        super.onDetach();
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
+    }
+
+    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
@@ -374,8 +394,12 @@ NEWTZID = id новой операции операции.*/
             R.id.btn_action_set_operation_ok, R.id.tv_msg})
     public void onClick(View view) {
         switch (view.getId()) {
+
+
+            //[*]
             case R.id.btn_action_get_num_repeat:
                 api.getNumRepeat(Integer.parseInt(tzid)).enqueue(globalModelCallback1);
+                sendAnalytics("action_get_num_repeat");
                 break;
 
             case R.id.tv_number:
@@ -386,43 +410,71 @@ NEWTZID = id новой операции операции.*/
                 Utils.copyToClipboard(getContext(), tvMsg.getText().toString());
                 break;
 
+            //[*]
             case R.id.btn_action_set_ready:
-                api = MyApplication.getApi();
                 api.setReady(tzid).enqueue(setReadyCallback);
+                sendAnalytics("action_set_ready");
                 break;
 
+            //[*]
             case R.id.btn_action_set_operation_over:
-                api = MyApplication.getApi();
                 api.setOperationOver(tzid).enqueue(globalModelCallback0);
+                sendAnalytics("action_set_operation_over");
                 break;
-
+            //[*]
             case R.id.btn_action_set_operation_used:
-                api = MyApplication.getApi();
                 api.setOperationUsed(tzid).enqueue(globalModelCallback2);
+                sendAnalytics("action_set_operation_used");
                 break;
 
+            //[*]
             case R.id.btn_action_set_operation_revise:
-                api = MyApplication.getApi();
                 api.setOperationRevise(tzid).enqueue(globalModelCallback2);
+                sendAnalytics("action_set_operation_revise");
                 break;
 
+            //[*]
             case R.id.btn_action_set_operation_ok:
-                api = MyApplication.getApi();
                 api.setOperationOk(tzid).enqueue(globalModelCallback2);
+                sendAnalytics("action_set_operation_ok");
                 break;
         }
+    }
+
+    private void sendAnalytics(String event) {
+        Bundle params = new Bundle();
+        params.putString("image_name", "lolo");
+        params.putString("full_text", "0000000000000000000000000");
+        mFirebaseAnalytics.logEvent("debug_" + event, params);
+        mFirebaseAnalytics.setCurrentScreen(getActivity(), null, null);
     }
 
     @Override
     protected void initInstances() {
         api = MyApplication.getApi();
-        api.getState(tzid).enqueue(operationsCallback);
-        // Stop refresh animation
-        swipeRefreshLayout.setRefreshing(false);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
+
+        doSomethingRepeatedly();
     }
 
     @Override
     public void onClick(View v, int position) {
 
+    }
+
+
+    private void doSomethingRepeatedly() {
+        timer.scheduleAtFixedRate(new TimerTask() {
+            public void run() {
+                try {
+                    api.getState(tzid).enqueue(operationsCallback);
+                    // Stop refresh animation
+                    swipeRefreshLayout.setRefreshing(false);
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
+
+            }
+        }, 0, 3000);
     }
 }

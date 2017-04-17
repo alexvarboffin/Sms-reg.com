@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Sms-reg.com</string>
     <string name="title_operations">Операции</string>
     <string name="title_balance">Баланс</string>
     <string name="title_set_rate">Ставка</string>
     <string name="action_exit">Выход</string>
+    <string name="title_order_add">Заказ аккаунтов</string>
+    <string name="about">Приложение использует официальное API 2.0. Мы не взимаем платы.
+        \nВся плата взимается владельцами сервиса sms-reg.com.
+        \nПо всем вопросам обращайтесь в техподдержку сервиса sms-reg.com.
+        \nДля работы приложения требуется получение Web Api ключ в личном кабинете.
+        \nПо поводу приложения писать на alexvarboffin@gmail.com
+    </string>
+    <string name="action_about">О программе</string>
+    <string name="title_get_num">Виртуальный номер</string>
+    <string name="title_api_key">Ключ доступа к API</string>
 </resources>

@@ -48,6 +48,13 @@ public class PreferencesHelper {
         MyApplication.updateKey();
     }
 
+    public int getSelected(int e) {
+        return this.mSharedPreferences.getInt(String.valueOf(e), 0);
+    }
+
+    public void putSelected(int e, int position) {
+        mEditor.putInt(String.valueOf(e), position).apply();
+    }
     //для примера загрузка из данных из SharedPreferences
     //public int loadStatusCheckbox(String name){
     //    return mSharedPreferences.getBoolean(name, false);
